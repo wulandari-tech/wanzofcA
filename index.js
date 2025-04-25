@@ -13,6 +13,9 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Store progress for each attack (using target URL as key)
+const attackProgress = {};
+
 app.post('/attack', (req, res) => {
     const { url: host, time, method, port: customPort } = req.body;
     if (!host || !time || !method) {
@@ -38,42 +41,52 @@ app.post('/attack', (req, res) => {
 
     console.log(`Menjalankan perintah: ${cmd}`);
 
-    let progress = 0;
-    const intervalTime = time * 1000 / 100; // Waktu interval untuk setiap 1% progress
+    // Initialize progress to 0 for this target
+    attackProgress[host] = 0;
+
+    // Send initial response
+    res.json({ success: true, message: `Serangan ${method} dimulai ke ${host}`, progress: 0 });
+
+    const intervalTime = time * 1000 / 100;
     let progressInterval;
 
-    // Fungsi untuk mengirim progress ke frontend (simulasi)
-    const sendProgress = (currentProgress) => {
-        progress = currentProgress;
-        console.log(`Progress: ${progress}%`);
-        // res tidak bisa langsung digunakan di sini. Karena res.json() sudah terpanggil di luar interval
-        // Jadi, progress tidak bisa di kirim melalui res.json() di dalam interval.
-    };
-
-    exec(cmd, (err, stdout, stderr) => {
-        clearInterval(progressInterval); // Hentikan interval setelah eksekusi selesai
-
-        if (err) {
-            console.error(`Error menjalankan serangan: ${err}`);
-            console.error(`Stderr: ${stderr}`);
-            return res.status(500).json({ success: false, message: 'Gagal menjalankan serangan', error: stderr, progress: 100 });
-        }
-
-        console.log(`Stdout: ${stdout}`);
-        return res.json({ success: true, message: `Serangan ${method} dimulai ke ${host}`, progress: 100 });
-    });
-
-    // Mulai simulasi progress
+    // Simulate progress (since we can't get real progress from exec)
+    let progress = 0;
     progressInterval = setInterval(() => {
         progress += 1;
-        sendProgress(Math.min(progress, 100)); // Pastikan progress tidak melebihi 100
+        attackProgress[host] = Math.min(progress, 100); // Update stored progress
+
         if (progress >= 100) {
             clearInterval(progressInterval);
         }
     }, intervalTime);
 
-    // Kirim respons awal segera (tanpa menunggu progress selesai)
-    res.json({ success: true, message: `Serangan ${method} dimulai ke ${host}`, progress: 0 });
+    exec(cmd, (err, stdout, stderr) => {
+        clearInterval(progressInterval); // Stop interval after exec finishes
+
+        if (err) {
+            console.error(`Error menjalankan serangan: ${err}`);
+            console.error(`Stderr: ${stderr}`);
+            attackProgress[host] = 100; // Ensure progress is 100 even on error
+            // Don't send another response here.  The client will get final status via the /progress endpoint.
+            return;
+        }
+
+        console.log(`Stdout: ${stdout}`);
+        attackProgress[host] = 100; // Ensure progress is 100 on success
+        // Don't send another response here. The client will get final status via the /progress endpoint.
+    });
+});
+
+// Endpoint to get the progress of an attack
+app.get('/progress', (req, res) => {
+    const host = req.query.url; // Get the target URL from the query parameter
+    if (!host) {
+        return res.status(400).json({ error: 'Target URL is required' });
+    }
+
+    const progress = attackProgress[host] || 0; // Get progress from storage, default to 0
+    res.json({ progress });
 });
 
 app.listen(port, () => {
