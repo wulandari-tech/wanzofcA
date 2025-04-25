@@ -1,258 +1,220 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>WANZOFC ATTACK</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-    <style>
-        /* Gaya yang sama seperti sebelumnya */
-        * {
-            box-sizing: border-box;
-            font-family: 'Orbitron', sans-serif;
-            color: #00ffe7;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WANZOFC ATTACK</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    /* Gaya yang sama seperti sebelumnya */
+    * {
+      box-sizing: border-box;
+      font-family: 'Orbitron', sans-serif;
+      color: #00ffe7;
+    }
 
-        body {
-            margin: 0;
-            background: radial-gradient(ellipse at center, #0a0a0a 0%, #000 100%);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at center, #0a0a0a 0%, #000 100%);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
 
-        .panel {
-            background: rgba(0, 255, 231, 0.05);
-            border: 1px solid #00ffe7;
-            box-shadow: 0 0 15px #00ffe7;
-            border-radius: 16px;
-            padding: 30px;
-            width: 90%;
-            max-width: 500px;
-            backdrop-filter: blur(10px);
-        }
+    .panel {
+      background: rgba(0, 255, 231, 0.05);
+      border: 1px solid #00ffe7;
+      box-shadow: 0 0 15px #00ffe7;
+      border-radius: 16px;
+      padding: 30px;
+      width: 90%;
+      max-width: 500px;
+      backdrop-filter: blur(10px);
+    }
 
-        .panel h2 {
-            text-align: center;
-            margin-bottom: 25px;
-            font-size: 26px;
-            text-shadow: 0 0 10px #00ffe7;
-        }
+    .panel h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 26px;
+      text-shadow: 0 0 10px #00ffe7;
+    }
 
-        .input-group {
-            margin-bottom: 20px;
-        }
+    .input-group {
+      margin-bottom: 20px;
+    }
 
-        .input-group label {
-            display: block;
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
+    .input-group label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
 
-        .input-group input,
-        .input-group select {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #00ffe7;
-            background-color: transparent;
-            font-size: 14px;
-            outline: none;
-        }
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #00ffe7;
+      background-color: transparent;
+      font-size: 14px;
+      outline: none;
+    }
 
-        button {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            background: #00ffe7;
-            color: #000;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 0 10px #00ffe7, 0 0 20px #00ffe7 inset;
-            transition: 0.3s;
-        }
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #00ffe7;
+      color: #000;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00ffe7, 0 0 20px #00ffe7 inset;
+      transition: 0.3s;
+    }
 
-        button:hover {
-            background-color: #00ffcc;
-            box-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc inset;
-        }
+    button:hover {
+      background-color: #00ffcc;
+      box-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc inset;
+    }
 
-        .notification {
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 14px;
-            display: none;
-        }
+    .notification {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 14px;
+      display: none;
+    }
 
-        .success {
-            background-color: rgba(0, 255, 100, 0.2);
-            border: 1px solid #00ff90;
-            color: #00ff90;
-        }
+    .success {
+      background-color: rgba(0, 255, 100, 0.2);
+      border: 1px solid #00ff90;
+      color: #00ff90;
+    }
 
-        .error {
-            background-color: rgba(255, 50, 50, 0.2);
-            border: 1px solid #ff5050;
-            color: #ff5050;
-        }
+    .error {
+      background-color: rgba(255, 50, 50, 0.2);
+      border: 1px solid #ff5050;
+      color: #ff5050;
+    }
 
-        /* Gaya untuk progress bar */
-        .progress-container {
-            width: 100%;
-            background-color: #ccc;
-            border-radius: 10px;
-            margin-top: 10px;
-            overflow: hidden; /* Penting untuk border-radius */
-            display: none;
-        }
+    /* Gaya untuk progress bar */
+    .progress-container {
+      width: 100%;
+      background-color: #ccc;
+      border-radius: 10px;
+      margin-top: 10px;
+      overflow: hidden; /* Penting untuk border-radius */
+      display: none;
+    }
 
-        .progress-bar {
-            height: 20px;
-            background-color: #00ffe7;
-            width: 0%;
-            border-radius: 10px;
-            transition: width 0.3s ease-in-out;
-        }
+    .progress-bar {
+      height: 20px;
+      background-color: #00ffe7;
+      width: 0%;
+      border-radius: 10px;
+      transition: width 0.3s ease-in-out;
+    }
 
-        .progress-text {
-            text-align: center;
-            font-size: 14px;
-            margin-top: 5px;
-            color: #fff;
-            text-shadow: 0 0 5px #000;
-        }
-    </style>
+    .progress-text {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 5px;
+      color: #fff;
+      text-shadow: 0 0 5px #000;
+    }
+  </style>
 </head>
 <body>
-<div class="panel">
+  <div class="panel">
     <h2>WANZOFC ATTACK</h2>
     <form id="attackForm">
-        <div class="input-group">
-            <label for="url">Target URL/IP</label>
-            <input type="text" name="url" id="url" required placeholder="contoh: https://target.com atau 1.1.1.1" />
-        </div>
-        <div class="input-group">
-            <label for="time">Durasi (detik)</label>
-            <input type="number" name="time" id="time" required placeholder="Durasi serangan" />
-        </div>
-        <div class="input-group">
-            <label for="port">Port (jika perlu)</label>
-            <input type="number" name="port" id="port" placeholder="Biasanya 80, 443, atau custom" />
-        </div>
-        <div class="input-group">
-            <label for="method">Metode Serangan</label>
-            <select name="method" id="method" required>
-                <option value="H2">H2</option>
-                <option value="TLS">TLS</option>
-                <option value="FLOOD">FLOOD</option>
-                <option value="MIX">MIX</option>
-                <option value="SKIBIDI">SKIBIDI</option>
-                <option value="UDP">UDP</option>
-                <option value="SSH">SSH</option>
-            </select>
-        </div>
-        <button type="submit">MULAI SERANGAN</button>
+      <div class="input-group">
+        <label for="url">Target URL/IP</label>
+        <input type="text" name="url" id="url" required placeholder="contoh: https://target.com atau 1.1.1.1" />
+      </div>
+      <div class="input-group">
+        <label for="time">Durasi (detik)</label>
+        <input type="number" name="time" id="time" required placeholder="Durasi serangan" />
+      </div>
+      <div class="input-group">
+        <label for="port">Port (jika perlu)</label>
+        <input type="number" name="port" id="port" placeholder="Biasanya 80, 443, atau custom" />
+      </div>
+      <div class="input-group">
+        <label for="method">Metode Serangan</label>
+        <select name="method" id="method" required>
+          <option value="H2">H2</option>
+          <option value="TLS">TLS</option>
+          <option value="FLOOD">FLOOD</option>
+          <option value="MIX">MIX</option>
+          <option value="SKIBIDI">SKIBIDI</option>
+          <option value="UDP">UDP</option>
+          <option value="SSH">SSH</option>
+        </select>
+      </div>
+      <button type="submit">MULAI SERANGAN</button>
 
-        <div class="progress-container" id="progressContainer">
-            <div class="progress-bar" id="progressBar"></div>
-            <div class="progress-text" id="progressText">0%</div>
-        </div>
+      <div class="progress-container" id="progressContainer">
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="progress-text" id="progressText">0%</div>
+      </div>
 
-        <div class="notification" id="notification"></div>
+      <div class="notification" id="notification"></div>
     </form>
-</div>
-<script>
+  </div>
+  <script>
     document.getElementById('attackForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const notif = document.getElementById('notification');
-        const progressContainer = document.getElementById('progressContainer');
-        const progressBar = document.getElementById('progressBar');
-        const progressText = document.getElementById('progressText');
-        const submitButton = document.querySelector('button[type="submit"]');
+      e.preventDefault();
+      const notif = document.getElementById('notification');
+      const progressContainer = document.getElementById('progressContainer');
+      const progressBar = document.getElementById('progressBar');
+      const progressText = document.getElementById('progressText');
+      const submitButton = document.querySelector('button[type="submit"]');
 
-        notif.style.display = 'none';
-        progressContainer.style.display = 'block';
-        progressBar.style.width = '0%';
-        progressText.innerText = '0%';
-        submitButton.disabled = true;
-        submitButton.innerText = 'Sedang Menyerang...';
+      notif.style.display = 'none';
+      progressContainer.style.display = 'block';
+      progressBar.style.width = '0%';
+      progressText.innerText = '0%';
+      submitButton.disabled = true;
+      submitButton.innerText = 'Sedang Menyerang...';
 
-        const form = new FormData(this);
-        const url = form.get('url'); // Get the URL from the form
-        const payload = {
-            url: url,
-            time: form.get('time'),
-            port: form.get('port'),
-            method: form.get('method'),
-        };
+      const form = new FormData(this);
+      const url = form.get('url');
+      const time = form.get('time');
+      const port = form.get('port');
+      const method = form.get('method');
 
-        try {
-            const res = await fetch('/attack', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+      try {
+        const res = await fetch(`/kudel?host=${encodeURIComponent(url)}&port=${encodeURIComponent(port)}&time=${encodeURIComponent(time)}&methods=${encodeURIComponent(method)}`);
 
-            if (!res.ok) {
-                throw new Error(`HTTP error! status: ${res.status}`);
-            }
-
-            const data = await res.json();
-
-            // Function to update the progress bar
-            const updateProgress = (progress) => {
-                progressBar.style.width = `${progress}%`;
-                progressText.innerText = `${progress}%`;
-            };
-
-            // Start polling for progress
-            const pollingInterval = setInterval(async () => {
-                try {
-                    const progressRes = await fetch(`/progress?url=${encodeURIComponent(url)}`); // Pass URL as query parameter
-                    if (!progressRes.ok) {
-                        throw new Error(`HTTP error! status: ${progressRes.status}`);
-                    }
-                    const progressData = await progressRes.json();
-                    updateProgress(progressData.progress);
-
-                    if (progressData.progress >= 100) {
-                        clearInterval(pollingInterval);
-                        notif.innerText = data.message;
-                        notif.className = `notification ${data.success ? 'success' : 'error'}`;
-                        notif.style.display = 'block';
-                        progressContainer.style.display = 'none';
-                        submitButton.disabled = false;
-                        submitButton.innerText = 'MULAI SERANGAN';
-                    }
-                } catch (error) {
-                    console.error("Error fetching progress:", error);
-                    clearInterval(pollingInterval);
-                    notif.innerText = "Terjadi kesalahan saat memperbarui progress.";
-                    notif.className = "notification error";
-                    notif.style.display = 'block';
-                    progressContainer.style.display = 'none';
-                    submitButton.disabled = false;
-                    submitButton.innerText = 'MULAI SERANGAN';
-                }
-            }, 500); // Poll every 0.5 seconds
-
-        } catch (err) {
-            console.error("Error:", err);
-            clearInterval(pollingInterval);
-            notif.innerText = "Gagal menghubungkan ke server: " + err.message;
-            notif.className = "notification error";
-            notif.style.display = 'block';
-            progressContainer.style.display = 'none';
-            submitButton.disabled = false;
-            submitButton.innerText = 'MULAI SERANGAN';
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
         }
+
+        const data = await res.json();
+
+        notif.innerText = data.message;
+        notif.className = `notification ${data.success ? 'success' : 'error'}`;
+        notif.style.display = 'block';
+        progressContainer.style.display = 'none';
+        submitButton.disabled = false;
+        submitButton.innerText = 'MULAI SERANGAN';
+
+      } catch (err) {
+        console.error("Error:", err);
+        notif.innerText = "Gagal menghubungkan ke server: " + err.message;
+        notif.className = "notification error";
+        notif.style.display = 'block';
+        progressContainer.style.display = 'none';
+        submitButton.disabled = false;
+        submitButton.innerText = 'MULAI SERANGAN';
+      }
     });
-</script>
+  </script>
 </body>
 </html>
