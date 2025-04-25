@@ -6,6 +6,7 @@
   <title>WANZOFC ATTACK</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
+    /* Gaya yang sama seperti sebelumnya */
     * {
       box-sizing: border-box;
       font-family: 'Orbitron', sans-serif;
@@ -100,6 +101,32 @@
       border: 1px solid #ff5050;
       color: #ff5050;
     }
+
+    /* Gaya untuk progress bar */
+    .progress-container {
+      width: 100%;
+      background-color: #ccc;
+      border-radius: 10px;
+      margin-top: 10px;
+      overflow: hidden; /* Penting untuk border-radius */
+      display: none;
+    }
+
+    .progress-bar {
+      height: 20px;
+      background-color: #00ffe7;
+      width: 0%;
+      border-radius: 10px;
+      transition: width 0.3s ease-in-out;
+    }
+
+    .progress-text {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 5px;
+      color: #fff;
+      text-shadow: 0 0 5px #000;
+    }
   </style>
 </head>
 <body>
@@ -131,6 +158,12 @@
         </select>
       </div>
       <button type="submit">MULAI SERANGAN</button>
+
+      <div class="progress-container" id="progressContainer">
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="progress-text" id="progressText">0%</div>
+      </div>
+
       <div class="notification" id="notification"></div>
     </form>
   </div>
@@ -138,7 +171,14 @@
     document.getElementById('attackForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const notif = document.getElementById('notification');
+      const progressContainer = document.getElementById('progressContainer');
+      const progressBar = document.getElementById('progressBar');
+      const progressText = document.getElementById('progressText');
+
       notif.style.display = 'none';
+      progressContainer.style.display = 'block';  // Tampilkan progress bar
+      progressBar.style.width = '0%';
+      progressText.innerText = '0%';
 
       const form = new FormData(this);
       const payload = {
@@ -149,6 +189,17 @@
       };
 
       try {
+        // Simulate progress (ganti dengan logika sesungguhnya dari backend jika ada)
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress += 10;
+          progressBar.style.width = `${Math.min(progress, 100)}%`;
+          progressText.innerText = `${Math.min(progress, 100)}%`;
+          if (progress >= 100) {
+            clearInterval(interval); // Stop interval setelah 100%
+          }
+        }, payload.time*10); // Ubah interval ini agar total waktu simulasi = time
+
         const res = await fetch('/attack', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -156,13 +207,19 @@
         });
         const data = await res.json();
 
+        clearInterval(interval); //Pastikan interval berhenti jika fetch selesai sebelum 100%
+
         notif.innerText = data.message;
         notif.className = `notification ${data.success ? 'success' : 'error'}`;
         notif.style.display = 'block';
+        progressContainer.style.display = 'none';
+
       } catch (err) {
+        clearInterval(interval); // Pastikan interval berhenti jika ada error
         notif.innerText = "Gagal menghubungkan ke server.";
         notif.className = "notification error";
         notif.style.display = 'block';
+        progressContainer.style.display = 'none';
       }
     });
   </script>
